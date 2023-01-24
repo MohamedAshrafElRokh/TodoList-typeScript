@@ -1,24 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
+import  { FC, useState } from 'react';
 import './App.css';
+import Todos from './component/Todos';
+import { TodosForm } from './component/TodosForm';
+import Todo from './models/todos';
 
-function App() {
+
+
+const  App: FC  = ()=>  {
+
+ const [todos,setTodos]  = useState<Todo[]>([])
+  const addTodosHandler = (enterdData: Todo):void =>
+  {
+    const newTodo = enterdData;
+    setTodos((prev) =>{
+      return prev.concat(newTodo)
+    })
+  }
+
+  const onRemoveTodosHandler = (todoId:string):void=>
+  {
+      setTodos((prev)=>
+      {
+        return prev.filter(todo => todo.id !== todoId);
+      })
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+     <TodosForm onAdd = {addTodosHandler}/>
+     <Todos  onRemoveTodo={onRemoveTodosHandler} items= {todos}/>
     </div>
   );
 }
